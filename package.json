@@ -6,7 +6,9 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@mistralai/mistralai": "^0.0.10",
+    "elysia": "latest",
+    "openai": "^4.28.0"
   },
   "devDependencies": {
     "bun-types": "latest"
