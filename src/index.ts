@@ -1,10 +1,11 @@
 import { Elysia } from "elysia";
 import OpenAI from 'openai'
 import MistralClient from '@mistralai/mistralai'
+import Stream from "@elysiajs/stream";
 
 type Message = {
-  role: "system" | "user" | "assistant";
-  message: string;
+    role: "system" | "user" | "assistant";
+    message: string;
 };
 type Conversation = Message[];
 
@@ -20,15 +21,24 @@ const systemMessage: Message = {
 
 const indexPlugin = new Elysia()
     .state('conversation', [systemMessage] as Conversation)
-    .get('/', ({store}) => {
+    .get('/', ({ store }) => {
         store.conversation = [systemMessage] as Conversation;
-       return Bun.file('views/index.html');
+        return Bun.file('views/index.html');
+    })
+
+
+const streamPlugin = new Elysia()
+    .state('stream', new Stream<string>())
+    .get('/chat/stream', ({ store }) => {
+        store.stream = new Stream<string>()
+        return store.stream
     })
 
 const app = new Elysia()
-  .use(indexPlugin)
-  .listen(3000);
+    .use(indexPlugin)
+    .use(streamPlugin)
+    .listen(3000);
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+    `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
 );
