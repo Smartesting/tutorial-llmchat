@@ -37,20 +37,20 @@ const chatPlugin = new Elysia()
     .use(indexPlugin)
     .use(streamPlugin)
     .derive(async () => {
-        const userMessageId = Date.now().toString()
-        return { userMessageId };
+        const llmMessageId = Date.now().toString()
+        return { llmMessageId };
     })
-    .onResponse(({ store, userMessageId }) => {
-        streamOpenAIResponse(store.stream, store.conversation, userMessageId).then(
+    .onResponse(({ store, llmMessageId }) => {
+        streamOpenAIResponse(store.stream, store.conversation, llmMessageId).then(
             (llmMessage) => store.conversation.push(llmMessage)
         )
     })
-    .post('/chat', async ({ userMessageId, store, set, body }) => {
+    .post('/chat', async ({ llmMessageId, store, set, body }) => {
         try {
             const userMessage: Message = { role: 'user', content: body.usermessage }
             store.conversation.push(userMessage)
             return `<div>${body.usermessage}</div>
-            <div id="${userMessageId}"></div>`
+            <div id="${llmMessageId}" sse-swap="${llmMessageId}"></div>`
         } catch (error) {
             set['status'] = 500
             return 'An error occurred while processing your request.'

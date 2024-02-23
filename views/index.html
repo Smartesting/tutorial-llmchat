@@ -1,11 +1,26 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-	<title>LLM Chat</title>
+	<script src="https://unpkg.com/htmx.org"></script>
+	<script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
+	<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
 </head>
 
 <body>
-	<h1>LLM Chat</h1>
+	<div hx-ext="client-side-templates" id="chat-container">
+		<div id="chat-history" hx-ext="sse" sse-connect="/chat/stream"
+			hx-on::after-settle="this.scrollTo(0, this.scrollHeight)"></div>
+		<form id="chat-form" hx-post="/chat"
+			hx-trigger="submit, keydown[!(ctrlKey||shiftKey)&&keyCode==13] from:#usermessage"
+			hx-target="#chat-history" mustache-template="exchange" hx-swap="beforeend"
+			hx-on::after-request="this.reset()">
+			<textarea id="usermessage" name="usermessage" placeholder="Type your message here" required
+				_="on input set me.style.height to '' then set me.style.height to (me.scrollHeight + 'px') end"></textarea>
+			<button id="send-button" type="submit">send</button>
+		</form>
+	</div>
+
 </body>
 
 </html>
