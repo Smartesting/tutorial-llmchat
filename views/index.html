@@ -5,22 +5,29 @@
 	<script src="https://unpkg.com/htmx.org"></script>
 	<script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
 	<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css" />
+	<link rel="stylesheet" href="public/style.css">
 </head>
 
-<body>
-	<div hx-ext="client-side-templates" id="chat-container">
-		<div id="chat-history" hx-ext="sse" sse-connect="/chat/stream"
-			hx-on::after-settle="this.scrollTo(0, this.scrollHeight)"></div>
+
+<body class="flex justify-center items-center py-2 h-screen bg-gray-100">
+	<div id="chat-container"
+		class="w-full max-w-3xl flex flex-col font-sans h-5/6 mx-auto bg-white shadow-lg rounded-lg">
+		<div id="chat-history" class="flex-1 overflow-y-auto flex flex-col space-y-2 p-4" hx-ext="sse"
+			sse-connect="/chat/stream" hx-on::after-settle="this.scrollTo(0, this.scrollHeight)">
+		</div>
 		<form id="chat-form" hx-post="/chat"
 			hx-trigger="submit, keydown[!(ctrlKey||shiftKey)&&keyCode==13] from:#usermessage"
 			hx-target="#chat-history" mustache-template="exchange" hx-swap="beforeend"
-			hx-on::after-request="this.reset()">
+			hx-on::after-request="this.reset()" class="flex items-center justify-between p-4 bg-gray-50">
 			<textarea id="usermessage" name="usermessage" placeholder="Type your message here" required
-				_="on input set me.style.height to '' then set me.style.height to (me.scrollHeight + 'px') end"></textarea>
-			<button id="send-button" type="submit">send</button>
+				_="on input set me.style.height to '' then set me.style.height to (me.scrollHeight + 'px') end"
+				class="flex-1 h-12 max-h-48 resize-none border rounded-md p-2 mr-2"></textarea>
+			<button id="send-button"
+				class="px-2 i-material-symbols-send w-9 h-9 py-2 h-12 bg-blue-500 hover:bg-blue-600"
+				type="submit"></button>
 		</form>
 	</div>
-
 </body>
 
 </html>

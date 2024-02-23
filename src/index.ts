@@ -1,4 +1,5 @@
 import { Elysia, t } from "elysia";
+import { staticPlugin } from '@elysiajs/static'
 import OpenAI from 'openai'
 import MistralClient from '@mistralai/mistralai'
 import Stream from "@elysiajs/stream";
@@ -49,8 +50,8 @@ const chatPlugin = new Elysia()
         try {
             const userMessage: Message = { role: 'user', content: body.usermessage }
             store.conversation.push(userMessage)
-            return `<div>${body.usermessage}</div>
-            <div id="${llmMessageId}" sse-swap="${llmMessageId}"></div>`
+            return `<div class="bg-blue-100 rounded p-2 whitespace-pre-wrap">${body.usermessage}</div>
+            <div class="bg-green-100 rounded p-2 whitespace-pre-wrap" id="${llmMessageId}" sse-swap="${llmMessageId}"></div>`
         } catch (error) {
             set['status'] = 500
             return 'An error occurred while processing your request.'
@@ -78,6 +79,7 @@ async function streamOpenAIResponse(sseStream: Stream<string>, conv: Conversatio
 }
 
 const app = new Elysia()
+    .use(staticPlugin())
     .use(chatPlugin)
     .listen(3000);
 
