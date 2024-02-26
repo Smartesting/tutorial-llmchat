@@ -3,7 +3,7 @@ import { defineConfig, presetIcons, presetWebFonts, presetWind } from "unocss";
 export default defineConfig({
 	cli: {
 		entry: {
-			patterns: ["views/index.html", "src/index.ts"],
+			patterns: ["views/index.html", "src/index.tsx"],
 			outFile: "public/style.css",
 		},
 	},

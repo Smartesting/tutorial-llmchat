@@ -4,15 +4,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "uno": "bunx --bun unocss",
-    "dev": "bun run --watch src/index.ts"
+    "dev": "bun run --watch src/index.tsx"
   },
   "dependencies": {
+    "@elysiajs/html": "^0.8.0",
     "@elysiajs/static": "^0.8.1",
     "@elysiajs/stream": "^0.8.0",
+    "@iconify-json/material-symbols": "^1.1.73",
     "@mistralai/mistralai": "^0.0.10",
     "@unocss/preset-icons": "^0.58.5",
     "@unocss/preset-web-fonts": "^0.58.5",
-    "@iconify-json/material-symbols": "^1.1.73",
     "elysia": "latest",
     "openai": "^4.28.0",
     "unocss": "^0.58.5"
